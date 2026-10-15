@@ -25,21 +25,34 @@ submissions/<task>/      the CSV files submitted to Kaggle
 
 ## Setup
 
-Python 3.11.
+The repository does not include a Python environment. Create one with Python 3.11 and install the pinned packages from `requirements.txt`. The commands below create it in a folder named `.venv` (ignored by git) and register it as a Jupyter kernel called `ml-project`.
+
+Windows (Command Prompt or PowerShell):
 
 ```bash
 python -m venv .venv
-.venv/Scripts/python -m pip install -r requirements.txt        # Linux/macOS: .venv/bin/python
-.venv/Scripts/python -m ipykernel install --user --name ml-project --display-name "ML Project (.venv)"
+.venv\Scripts\python -m pip install -r requirements.txt
+.venv\Scripts\python -m ipykernel install --user --name ml-project --display-name "ML Project (.venv)"
+```
+
+Linux / macOS:
+
+```bash
+python3.11 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python -m ipykernel install --user --name ml-project --display-name "ML Project (.venv)"
 ```
 
 ## Reproducing the results
 
-Run the notebooks in order with the **ML Project (.venv)** kernel: regression `01 → 05`, then classification `01 → 03`. From the command line:
+Open the notebooks in Jupyter or VS Code, select the **ML Project (.venv)** kernel, and run them top to bottom in this order: regression `01 → 05`, then classification `01 → 03`. The notebooks find `src/` and `dataset/` on their own, so no paths need changing.
+
+Or run them all from a bash shell (Git Bash on Windows). On Linux/macOS replace `.venv/Scripts/python` with `.venv/bin/python`:
 
 ```bash
-.venv/Scripts/python -m nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=ml-project notebooks/regression/01_eda.ipynb
-# ... same for the other notebooks, in order
+for nb in regression/01_eda regression/02_preprocessing regression/03_models regression/04_tuning regression/05_ensembles classification/01_eda classification/02_preprocessing classification/03_models; do
+  .venv/Scripts/python -m nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=ml-project --ExecutePreprocessor.timeout=-1 notebooks/$nb.ipynb
+done
 ```
 
 - Every random step uses the seed in `src/config.py` (42): CV splits, trees, Random Forest, XGBoost and the simulated noise.
