@@ -1,0 +1,10 @@
+# Python 3.11. pandas pinned to 2.x to match Kaggle's image.
+pandas==2.3.3
+numpy==2.4.6
+scikit-learn==1.9.1
+matplotlib==3.11.2
+seaborn==0.13.2
+jupyter
+ipykernel
+nbconvert
+xgboost==3.2.0
